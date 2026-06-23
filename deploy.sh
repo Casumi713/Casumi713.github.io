@@ -3,17 +3,20 @@
 set -e
 
 REMOTE_URL="https://codeberg.org/Casumi/pages.git"
-BUILD_DIR="/tmp/casumi-build-$$"
+BUILD_DIR="/tmp/casumi-mizuki-build-$$"
 
-echo "🚀 构建站点（使用 /tmp 避免文件系统兼容问题）..."
+echo "🚀 构建站点..."
 
-# 复制源码到 /tmp 构建（解决 /mnt/g/ 下 pnpm 的兼容性问题）
+# 复制源码到 /tmp 构建
 rm -rf "$BUILD_DIR"
 cp -r "$(dirname "$0")" "$BUILD_DIR"
 cd "$BUILD_DIR"
 
-# 确保虚拟存储在 /tmp
-echo 'virtual-store-dir=/tmp/pnpm-virtual-store' > .npmrc
+# 确保 .npmrc 配置正确
+cat > .npmrc << 'NPMRC'
+virtual-store-dir=/tmp/pnpm-virtual-store
+node-linker=hoisted
+NPMRC
 pnpm install --no-frozen-lockfile
 pnpm build
 
@@ -28,7 +31,6 @@ git checkout pages 2>/dev/null || git checkout --orphan pages
 rm -rf * .gitignore 2>/dev/null || true
 cp -r "$BUILD_DIR/dist/"* .
 
-# 添加 .gitignore
 echo "node_modules/" > .gitignore
 
 # 提交并推送
