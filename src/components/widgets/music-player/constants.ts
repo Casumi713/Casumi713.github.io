@@ -37,6 +37,14 @@ export const LOCAL_PLAYLIST: Song[] = [
 		url: "assets/music/url/cl.mp3",
 		duration: 200,
 	},
+	{
+		id: 5,
+		title: "妄想税",
+		artist: "DECO*27,初音ミク",
+		cover: "http://p1.music.126.net/EDcLXmRye4yo5AKac6xjLQ==/5699868278502543.jpg?param=300x300",
+		url: "https://m10.music.126.net/20260624174624/a34a56b7f44803480f2fda0235f0339b/ymusic/3779/43c7/ecb4/baec7e55cf24a82e8a6a845d8f3aea9e.mp3?vuutv=eAC0hsFi3wu8/pNjsPiDvMa+bNtPv2q/jqZjAfsJv9lRVfBxeECaCNFneD7ubVOcUOJYun32+t4Guf/IHSzD1uHyHm9jeEgO42l219wIVqQi1BQME9fi20R7G75xQPpJEeq5vijV1gdPKSJGEMtdZg==&cdntag=bWFyaz1vc193ZWIscXVhbGl0eV9zdGFuZGFyZA",
+		duration: 200,
+	},
 ];
 
 export const DEFAULT_SONG: Song = {
