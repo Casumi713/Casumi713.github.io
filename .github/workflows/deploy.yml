@@ -33,6 +33,16 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/Casumi713/Casumi-Blog.git content
 
+      # 复制用户内容资产到 public/（symlink 在部署时不会跟随）
+      - name: Copy content assets to public directory
+        run: |
+          cp -r content/assets/desktop-banner public/assets/desktop-banner
+          cp -r content/assets/mobile-banner public/assets/mobile-banner
+          cp -r content/assets/music public/assets/music
+          cp -r content/assets/images public/assets/images
+          cp -r content/assets/anime public/assets/anime
+          cp -r content/pio public/pio
+
       # 从内容仓库生成内容配置（导航、歌单、个人资料等）
       - name: Generate content config
         run: node scripts/generate-content-config.mjs
@@ -43,7 +53,7 @@ jobs:
       - name: Build site
         run: pnpm run build
         env:
-          ENABLE_CONTENT_SYNC: true
+          ENABLE_CONTENT_SYNC: false
 
       # 创建 .nojekyll 防止 Jekyll 处理站点（阻止 _astro 目录被忽略）
       - name: Create .nojekyll
