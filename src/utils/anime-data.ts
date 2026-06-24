@@ -91,6 +91,12 @@ export function getAnimeSourceConfigs(): Record<string, AnimeSourceConfig> {
 			fetchOnDev: undefined,
 			emptyDescription: i18n(I18nKey.animeEmptyBangumi),
 		},
+		anilist: {
+			type: "json",
+			filename: "bangumi-data.json",
+			fetchOnDev: undefined,
+			emptyDescription: i18n(I18nKey.animeEmptyBangumi),
+		},
 	};
 }
 
