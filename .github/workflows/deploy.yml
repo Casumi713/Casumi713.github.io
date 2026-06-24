@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+  repository_dispatch:  # 使用 Repository Dispatch 让内容更新时自动触发构建
+    types:
+      - content-updated
   workflow_dispatch:
 
 permissions:
