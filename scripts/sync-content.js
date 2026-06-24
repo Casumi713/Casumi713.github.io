@@ -98,6 +98,13 @@ const contentMappings = [
 	{ src: "spec", dest: "src/content/spec" },
 	{ src: "data", dest: "src/data" },
 	{ src: "images", dest: "public/images" },
+	// 用户内容资产（Banner、音乐、头像、动漫封面、Live2D）
+	{ src: "assets/desktop-banner", dest: "public/assets/desktop-banner" },
+	{ src: "assets/mobile-banner", dest: "public/assets/mobile-banner" },
+	{ src: "assets/music", dest: "public/assets/music" },
+	{ src: "assets/images", dest: "public/assets/images" },
+	{ src: "assets/anime", dest: "public/assets/anime" },
+	{ src: "pio", dest: "public/pio" },
 ];
 
 for (const mapping of contentMappings) {
