@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Casumi</title><description>✦ 二次元与技术の交错之境 ✦</description><link>https://casumi713.github.io/</link><language>zh_CN</language><item><title>Markdown Tutorial</title><link>https://casumi713.github.io/posts/markdown-tutorial/</link><guid isPermaLink="true">https://casumi713.github.io/posts/markdown-tutorial/</guid><description>A simple example of a Markdown blog post.</description><pubDate>Mon, 20 Jan 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Markdown Tutorial&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Casumi</title><description>✦ 二次元与技术の交错之境 ✦</description><link>https://casumi713.github.io/</link><language>zh_CN</language><item><title>Testing Post 001</title><link>https://casumi713.github.io/posts/test_post/</link><guid isPermaLink="true">https://casumi713.github.io/posts/test_post/</guid><description>A simple example of a Markdown blog post.</description><pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Test Post&lt;/h1&gt;
+&lt;p&gt;我不知道说什么欸，就测试一下修改之后是否生效吧！&lt;/p&gt;
+&lt;p&gt;好像没有生效欸。&lt;/p&gt;
+&lt;p&gt;再次测试。&lt;/p&gt;
+</content:encoded></item><item><title>Markdown Tutorial</title><link>https://casumi713.github.io/posts/markdown-tutorial/</link><guid isPermaLink="true">https://casumi713.github.io/posts/markdown-tutorial/</guid><description>A simple example of a Markdown blog post.</description><pubDate>Mon, 20 Jan 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Markdown Tutorial&lt;/h1&gt;
 &lt;p&gt;A markdown example shows how to write a markdown file. This document integrates core syntax and extensions (GMF).&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;#block-elements&quot;&gt;Block Elements&lt;/a&gt;

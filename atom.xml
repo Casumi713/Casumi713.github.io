@@ -5,8 +5,25 @@
   <link href="https://casumi713.github.io/" rel="alternate" type="text/html"/>
   <link href="https://casumi713.github.io/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://casumi713.github.io/</id>
-  <updated>2026-06-24T04:52:11.836Z</updated>
+  <updated>2026-06-24T05:11:57.212Z</updated>
   <language>zh_CN</language>
+  <entry>
+    <title>Testing Post 001</title>
+    <link href="https://casumi713.github.io/posts/test_post/" rel="alternate" type="text/html"/>
+    <id>https://casumi713.github.io/posts/test_post/</id>
+    <published>2026-06-24T00:00:00.000Z</published>
+    <updated>2026-06-24T00:00:00.000Z</updated>
+    <summary>A simple example of a Markdown blog post.</summary>
+    <content type="html"><![CDATA[<h1>Test Post</h1>
+<p>我不知道说什么欸，就测试一下修改之后是否生效吧！</p>
+<p>好像没有生效欸。</p>
+<p>再次测试。</p>
+]]></content>
+    <author>
+      <name>Casumi</name>
+    </author>
+    <category term="Examples"></category>
+  </entry>
   <entry>
     <title>Markdown Tutorial</title>
     <link href="https://casumi713.github.io/posts/markdown-tutorial/" rel="alternate" type="text/html"/>
