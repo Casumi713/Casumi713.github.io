@@ -97,9 +97,15 @@ export interface SiteConfig {
 		useWebp?: boolean; // 是否使用WebP格式（默认 true）
 	};
 
+	// 添加anilist配置
+	anilist?: {
+		userName?: string; // AniList用户名
+		fetchOnDev?: boolean;
+	};
+
 	// 添加番剧页面配置
 	anime?: {
-		mode?: "bangumi" | "local" | "bilibili"; // 番剧页面模式
+		mode?: "bangumi" | "local" | "bilibili" | "anilist"; // 番剧页面模式
 	};
 
 	// 日记页面 Memos API 地址，客户端 fetch 获取动态数据

@@ -55,6 +55,9 @@ async function main() {
 	} else if (mode === "bangumi") {
 		console.log("Detected anime mode: bangumi, running update-bangumi.mjs");
 		await runScript(path.join(scriptsDir, "update-bangumi.mjs"));
+	} else if (mode === "anilist") {
+		console.log("Detected anime mode: anilist, running update-anilist.mjs");
+		await runScript(path.join(scriptsDir, "update-anilist.mjs"));
 	} else {
 		console.log(`Anime mode is "${mode}", skipping data update.`);
 	}
@@ -65,4 +68,3 @@ main().catch((err) => {
 	console.error(err);
 	process.exit(1);
 });
-

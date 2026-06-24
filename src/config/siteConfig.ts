@@ -54,8 +54,13 @@ export const siteConfig: SiteConfig = {
 		useWebp: true,
 	},
 
+	anilist: {
+		userName: "Casumi", // AniList用户名
+		fetchOnDev: false,
+	},
+
 	anime: {
-		mode: "local",
+		mode: "anilist",
 	},
 
 	diaryApiUrl: "",
