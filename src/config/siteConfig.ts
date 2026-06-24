@@ -6,7 +6,7 @@ const SITE_LANG = "zh_CN"; // 语言代码，例如：'en', 'zh_CN', 'ja' 等。
 export const siteConfig: SiteConfig = {
 	title: "Casumi",
 	subtitle: "✦ 二次元与技术の交错之境 ✦",
-	siteURL: "https://casumi.codeberg.page/", // 站点URL，以斜杠结尾
+	siteURL: "https://casumi713.github.io/", // 站点URL，以斜杠结尾
 	siteStartDate: "2026-06-01", // 站点开始日期
 
 	lang: SITE_LANG,

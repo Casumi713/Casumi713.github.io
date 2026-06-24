@@ -2,7 +2,7 @@
 # 部署脚本：构建站点并推送到 pages 分支
 set -e
 
-REMOTE_URL="https://codeberg.org/Casumi/pages.git"
+REMOTE_URL="git@github.com:Casumi713/Casumi713.github.io.git"
 BUILD_DIR="/tmp/casumi-mizuki-build-$$"
 
 echo "🚀 构建站点..."
@@ -25,7 +25,7 @@ cd /tmp
 rm -rf pages-deploy
 git clone --depth 1 "$REMOTE_URL" pages-deploy
 cd pages-deploy
-git checkout pages 2>/dev/null || git checkout --orphan pages
+git checkout main 2>/dev/null || git checkout --orphan main
 
 # 清空并复制构建产物
 rm -rf * .gitignore 2>/dev/null || true
