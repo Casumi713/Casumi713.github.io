@@ -44,3 +44,4 @@ jobs:
           branch: gh-pages   # GitHub Pages 可用的源分支
           folder: dist       # Astro 默认构建输出目录
           clean: true        # 清理旧文件
+          jeykll: false      # 添加 .nojekyll 防止 _astro 目录被 Jekyll 忽略
