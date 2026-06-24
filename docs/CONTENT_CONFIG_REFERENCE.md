@@ -1,203 +1,156 @@
 # 内容配置参考
 
-本文件描述内容仓库（`data/site-config.json`）中所有可配置字段的结构与作用。
+内容仓库的 `data/config/` 目录下存放按 section 拆分的 JSON 配置文件。
+每个文件名（不含 `.json`）对应一个配置 section，可独立编辑。
 
-## 文件位置
+---
+
+## 文件结构与对应关系
 
 ```
 Casumi-Blog/
   data/
-    site-config.json   ← 在内容仓库中编辑此文件
+    config/
+      site.json          → 站点基本信息（标题、副标题、URL、Banner）
+      navBar.json        → 导航栏菜单
+      profile.json       → 个人资料（头像、简介、社交链接）
+      announcement.json  → 公告栏
+      music.json         → 本地歌单
+      pio.json           → Live2D 看板娘（模型、对话）
+      footer.json        → 页脚自定义 HTML
 ```
 
-所有字段**均为可选**。只填写你要覆盖的字段，其余将自动使用主题默认值。
+> 所有字段**均为可选**。只填你要覆盖的字段即可。
+> **向后兼容**：也支持单个 `data/site-config.json` 组合文件，它会覆盖 `data/config/` 中同名 section。
 
 ---
 
-## site 段 — 站点基本信息
+## 各文件字段参考
+
+### site.json
 
 ```jsonc
 {
-  "site": {
-    "title": "Casumi",              // 站点标题（浏览器标签页）
-    "subtitle": "✦ 二次元与技术の交错之境 ✦", // 副标题
-    "siteURL": "https://casumi713.github.io/", // 站点 URL（末尾 /）
-    "navbarTitle": {                 // 顶栏标题
-      "mode": "text-icon",           // "text-icon" | "logo"
-      "text": "Casumi",              // 标题文字
-      "icon": "assets/images/...webp", // 标题图标
-      "logo": "assets/images/...webp"  // Logo 图片
-    },
-    "banner": {                      // 首页横幅
-      "desktop": ["..."],            // 桌面端横幅图片数组
-      "mobile": ["..."],             // 移动端横幅图片数组
-      "homeText": {                  // 首页文字
-        "title": "✨ Casumi's Nest ✨",
-        "subtitle": ["🌸 编程 · 动漫 · 日常 🌸"]
-      }
+  "title": "Casumi",
+  "subtitle": "✦ 二次元与技术の交错之境 ✦",
+  "siteURL": "https://casumi713.github.io/",
+  "navbarTitle": {
+    "mode": "text-icon",           // "text-icon" | "logo"
+    "text": "Casumi",
+    "icon": "assets/images/...webp",
+    "logo": "assets/images/...webp"
+  },
+  "banner": {
+    "desktop": ["/assets/desktop-banner/1.webp"],
+    "mobile": ["/assets/mobile-banner/1.webp"],
+    "homeText": {
+      "title": "✨ Casumi's Nest ✨",
+      "subtitle": ["🌸 编程 · 动漫 · 日常 🌸"]
     }
   }
 }
 ```
 
----
+### navBar.json
 
-## navBar 段 — 导航栏菜单
-
-```jsonc
-{
-  "navBar": {
-    "links": [
-      // 预设链接（自动映射为内置图标和路径）
-      { "preset": "Home" },
-
-      // 完整自定义链接
-      {
-        "name": "链接",                 // 显示名称
-        "url": "/links/",              // 链接地址
-        "icon": "material-symbols:link", // Iconify 图标名
-        "children": [                  // 子菜单（可选）
-          {
-            "name": "GitHub",
-            "url": "https://github.com/Casumi",
-            "external": true,          // 外部链接（新标签打开）
-            "icon": "fa7-brands:github"
-          },
-          { "preset": "About" }       // 子菜单中也可以使用预设
-        ]
-      }
-    ]
-  }
-}
-```
-
-### 可用的预设名
-
-| 预设名 | 用途 |
-|--------|------|
-| `Home` | 首页 |
-| `Archive` | 归档 |
-| `About` | 关于 |
-| `Friends` | 友链 |
-| `Anime` | 追番 |
-| `Diary` | 日记 |
-| `Albums` | 相册 |
-| `Projects` | 项目 |
-| `Skills` | 技能 |
-| `Timeline` | 时间线 |
-
----
-
-## profile 段 — 个人资料
+支持**预设链接**（自动映射为内置图标和路径）和**自定义链接**：
 
 ```jsonc
 {
-  "profile": {
-    "avatar": "assets/images/casuki-transparent.webp", // 头像
-    "name": "Casumi",
-    "bio": "✨ 在代码和二次元之间反复横跳 ✨",
-    "typewriter": {
-      "enable": true,    // 是否启用打字机效果
-      "speed": 80        // 打字速度（毫秒）
-    },
-    "links": [           // 社交链接
-      {
-        "name": "GitHub",
-        "icon": "fa7-brands:github",
-        "url": "https://github.com/ca-suki"
-      }
-    ]
-  }
-}
-```
-
----
-
-## announcement 段 — 公告栏
-
-```jsonc
-{
-  "announcement": {
-    "title": "公告",
-    "content": "🎉 欢迎来访~ 🎉",
-    "closable": true,
-    "link": {
-      "enable": true,
-      "text": "了解更多",
-      "url": "/about/",
-      "external": false    // 是否新标签打开
+  "links": [
+    { "preset": "Home" },           // 预设（见下方列表）
+    {
+      "name": "链接",
+      "url": "/links/",
+      "icon": "material-symbols:link",
+      "children": [
+        { "preset": "About" },
+        {
+          "name": "GitHub",
+          "url": "https://github.com/Casumi",
+          "external": true,
+          "icon": "fa7-brands:github"
+        }
+      ]
     }
+  ]
+}
+```
+
+**可用预设名：** `Home` `Archive` `About` `Friends` `Anime` `Diary` `Albums` `Projects` `Skills` `Timeline`
+
+### profile.json
+
+```jsonc
+{
+  "avatar": "assets/images/casuki-transparent.webp",
+  "name": "Casumi",
+  "bio": "✨ 在代码和二次元之间反复横跳 ✨",
+  "typewriter": { "enable": true, "speed": 80 },
+  "links": [
+    { "name": "GitHub", "icon": "fa7-brands:github", "url": "https://github.com/ca-suki" }
+  ]
+}
+```
+
+### announcement.json
+
+```jsonc
+{
+  "title": "公告",
+  "content": "🎉 欢迎来访~ 🎉",
+  "closable": true,
+  "link": {
+    "enable": true,
+    "text": "了解更多",
+    "url": "/about/",
+    "external": false
   }
 }
 ```
 
----
-
-## music 段 — 歌单
+### music.json
 
 ```jsonc
 {
-  "music": {
-    "localPlaylist": [
-      {
-        "id": 1,
-        "title": "口笛で愛は歌えない",    // 歌曲名
-        "artist": "Dazbee",            // 歌手
-        "cover": "assets/music/cover/dazbee.webp", // 封面（本地或 URL）
-        "url": "assets/music/url/dazbee.mp3",      // 音频（本地或 URL）
-        "duration": 0                  // 时长（秒，0=未知）
-      }
-    ]
-  }
-}
-```
-
-> 提示：`cover` 和 `url` 支持完整 URL（如 `https://...`）和本地路径。
-
----
-
-## pio 段 — Live2D 看板娘
-
-```jsonc
-{
-  "pio": {
-    "models": [                                  // 模型路径列表（第一个为默认）
-      "/pio/models/拉薇1/拉薇1.model3.json",
-      "/pio/models/NOIR/noir.model3.json"
-    ],
-    "dialog": {                                  // 对话文本
-      "welcome": "Welcome to Mizuki Website!",   // 欢迎词
-      "touch": ["What are you doing?", "HENTAI!"], // 触摸回应（数组，随机选一个）
-      "home": "Click here to go back to homepage!", // 首页提示
-      "skin": ["Want to see my new outfit?", "..."], // 换装提示
-      "close": "QWQ See you next time~",         // 关闭提示
-      "link": "https://github.com/LyraVoid/Mizuki"  // 关于链接
+  "localPlaylist": [
+    {
+      "id": 1,
+      "title": "口笛で愛は歌えない",
+      "artist": "Dazbee",
+      "cover": "assets/music/cover/dazbee.webp",
+      "url": "assets/music/url/dazbee.mp3",
+      "duration": 0
     }
+  ]
+}
+```
+
+> `cover` 和 `url` 支持本地路径和完整 URL（如 `https://...`）。
+
+### pio.json
+
+```jsonc
+{
+  "models": [
+    "/pio/models/拉薇1/拉薇1.model3.json",
+    "/pio/models/NOIR/noir.model3.json"
+  ],
+  "dialog": {
+    "welcome": "Welcome!",
+    "touch": ["What are you doing?", "HENTAI!"],
+    "home": "Click here to go back to homepage!",
+    "skin": ["Want to see my new outfit?", "..."],
+    "close": "QWQ See you next time~",
+    "link": "https://github.com/LyraVoid/Mizuki"
   }
 }
 ```
 
----
-
-## footer 段 — 页脚
+### footer.json
 
 ```jsonc
 {
-  "footer": {
-    "customHtml": ""  // 自定义 HTML（如备案号）。为空则读取 FooterConfig.html
-  }
+  "customHtml": ""    // 留空则读取 FooterConfig.html
 }
 ```
-
----
-
-## 完整示例
-
-```jsonc
-{
-  "site": { "title": "Casumi" },
-  "profile": { "name": "Casumi" }
-}
-```
-
-只覆盖 `title` 和 `profile.name`，其余所有配置使用主题默认值。
