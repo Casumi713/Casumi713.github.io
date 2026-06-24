@@ -74,3 +74,16 @@ If the project has no test infrastructure and the task is exploratory, state suc
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+## 6. Content Config Pattern
+
+This project uses a build-time content-config generation pattern for separating site content from code:
+- Content repo: `data/site-config.json` — all content-like config (nav, profile, announcement, music playlist, banner images, pio dialog)
+- Generator: `scripts/generate-content-config.mjs` reads JSON → writes `src/generated/content-config.ts` (pure JS literals, no `fs` calls)
+- Config files: `src/config/*.ts` import from `../generated/content-config` and merge with code defaults
+
+**When adding new configurable fields:**
+1. Add the field to `src/types/content-config.ts`
+2. Add the field to `data/site-config.json` in the content repo (with example values)
+3. In the relevant `src/config/*.ts`, import `contentConfig` and merge with defaults
+4. Document in `docs/CONTENT_CONFIG_REFERENCE.md`

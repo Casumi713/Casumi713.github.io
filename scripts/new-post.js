@@ -16,7 +16,7 @@ const args = process.argv.slice(2);
 
 if (args.length === 0) {
 	console.error(`Error: No filename argument provided
-Usage: npm run new-post -- <filename>`);
+	Usage: npm run new-post -- <filename>`);
 	process.exit(1); // Terminate the script and return error code 1
 }
 
@@ -28,7 +28,11 @@ if (!fileExtensionRegex.test(fileName)) {
 	fileName += ".md";
 }
 
-const targetDir = "./src/content/posts/";
+// 检测内容分离模式：如果 content/posts/ 存在，写入内容仓库
+const contentRepoDir = path.resolve("./content/posts");
+const localDir = "./src/content/posts/";
+const targetDir = fs.existsSync(contentRepoDir) ? contentRepoDir : localDir;
+
 const fullPath = path.join(targetDir, fileName);
 
 if (fs.existsSync(fullPath)) {
@@ -49,7 +53,7 @@ description: ''
 image: ''
 tags: []
 category: ''
-draft: false 
+draft: false
 lang: ''
 ---
 `;

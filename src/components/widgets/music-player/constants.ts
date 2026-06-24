@@ -1,10 +1,12 @@
 import type { Song } from "./types";
+import { contentConfig } from "@/generated/content-config";
 
 export const STORAGE_KEY_VOLUME = "music-player-volume";
 
 export const DEFAULT_VOLUME = 0.7;
 
-export const LOCAL_PLAYLIST: Song[] = [
+// ── 兜底歌单（无内容配置时使用）────────────────────────────────────
+const DEFAULT_PLAYLIST: Song[] = [
 	{
 		id: 1,
 		title: "口笛で愛は歌えない",
@@ -24,7 +26,7 @@ export const LOCAL_PLAYLIST: Song[] = [
 	{
 		id: 3,
 		title: "眩耀夜行",
-		artist: "ス리즈ブーケ",
+		artist: "スリズブーケ",
 		cover: "assets/music/cover/xryx.webp",
 		url: "assets/music/url/xryx.mp3",
 		duration: 180,
@@ -46,6 +48,12 @@ export const LOCAL_PLAYLIST: Song[] = [
 		duration: 200,
 	},
 ];
+
+// ── 歌单：内容配置优先，代码兜底 ──────────────────────────────────
+export const LOCAL_PLAYLIST: Song[] =
+	contentConfig.music?.localPlaylist && contentConfig.music.localPlaylist.length > 0
+		? (contentConfig.music.localPlaylist as Song[])
+		: DEFAULT_PLAYLIST;
 
 export const DEFAULT_SONG: Song = {
 	title: "Sample Song",

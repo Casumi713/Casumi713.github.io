@@ -51,6 +51,11 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
+      - name: Generate content config
+        run: node scripts/generate-content-config.mjs || true
+        env:
+          ENABLE_CONTENT_SYNC: false
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -73,6 +78,11 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+
+      - name: Generate content config
+        run: node scripts/generate-content-config.mjs || true
+        env:
+          ENABLE_CONTENT_SYNC: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

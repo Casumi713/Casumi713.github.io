@@ -1,9 +1,13 @@
 import type { SiteConfig } from "../types/config";
+import { contentConfig } from "../generated/content-config";
 
 // 定义站点语言
-const SITE_LANG = "zh_CN"; // 语言代码，例如：'en', 'zh_CN', 'ja' 等。
+const SITE_LANG = "zh_CN";
 
-export const siteConfig: SiteConfig = {
+// ---------------------------------------------------------------------------
+// 默认站点配置（代码兜底）
+// ---------------------------------------------------------------------------
+const DEFAULTS: SiteConfig = {
 	title: "Casumi",
 	subtitle: "✦ 二次元与技术の交错之境 ✦",
 	siteURL: "https://casumi713.github.io/", // 站点URL，以斜杠结尾
@@ -55,7 +59,7 @@ export const siteConfig: SiteConfig = {
 	},
 
 	anilist: {
-		userName: "Casumi", // AniList用户名
+		userName: "Casumi",
 		fetchOnDev: false,
 	},
 
@@ -146,6 +150,7 @@ export const siteConfig: SiteConfig = {
 			transparentMode: "semifull",
 		},
 	},
+
 	toc: {
 		enable: true,
 		mobileTop: true,
@@ -154,9 +159,11 @@ export const siteConfig: SiteConfig = {
 		depth: 3,
 		useJapaneseBadge: true,
 	},
+
 	showCoverInContent: true,
 	generateOgImages: false,
 	favicon: [],
+
 	font: {
 		asciiFont: {
 			fontFamily: "ZenMaruGothic-Medium",
@@ -171,25 +178,71 @@ export const siteConfig: SiteConfig = {
 			enableCompress: true,
 		},
 	},
+
 	showLastModified: true,
+
 	pageProgressBar: {
 		enable: true,
 		height: 3,
 		duration: 6000,
 	},
+
 	thirdPartyAnalytics: {
 		enable: false,
 		clarityId: "",
 	},
+
 	card: {
 		border: true,
 		followTheme: false,
 	},
+
 	imageOptimization: {
 		formats: "webp",
 		quality: 85,
 		noReferrerDomains: ["*.hdslb.com"],
 	},
 };
+
+// ---------------------------------------------------------------------------
+// 从内容配置合并 content-like 字段
+// ---------------------------------------------------------------------------
+const cs = contentConfig.site;
+
+export const siteConfig: SiteConfig = cs
+	? {
+			...DEFAULTS,
+
+			// 顶层字符串字段
+			title: cs.title ?? DEFAULTS.title,
+			subtitle: cs.subtitle ?? DEFAULTS.subtitle,
+			siteURL: cs.siteURL ?? DEFAULTS.siteURL,
+
+			// 导航栏标题
+			navbarTitle: cs.navbarTitle
+				? { ...DEFAULTS.navbarTitle!, ...cs.navbarTitle }
+				: DEFAULTS.navbarTitle,
+
+			// Banner（深度合并 src 和 homeText，其余保持）
+			banner: cs.banner
+				? {
+						...DEFAULTS.banner,
+						src: {
+							desktop: cs.banner.desktop ?? DEFAULTS.banner.src.desktop,
+							mobile: cs.banner.mobile ?? DEFAULTS.banner.src.mobile,
+						},
+						homeText: cs.banner.homeText
+							? {
+									...DEFAULTS.banner.homeText!,
+									...cs.banner.homeText,
+									subtitle:
+										cs.banner.homeText.subtitle ??
+										DEFAULTS.banner.homeText!.subtitle,
+								}
+							: DEFAULTS.banner.homeText,
+					}
+				: DEFAULTS.banner,
+		}
+	: DEFAULTS;
 
 export { SITE_LANG };
