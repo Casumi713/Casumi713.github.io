@@ -5,8 +5,39 @@
   <link href="https://casumi713.github.io/" rel="alternate" type="text/html"/>
   <link href="https://casumi713.github.io/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://casumi713.github.io/</id>
-  <updated>2026-06-27T08:17:06.972Z</updated>
+  <updated>2026-06-30T10:31:58.732Z</updated>
   <language>zh_CN</language>
+  <entry>
+    <title>有关于生成手写内容的一些想法</title>
+    <link href="https://casumi713.github.io/posts/about_handwriting/" rel="alternate" type="text/html"/>
+    <id>https://casumi713.github.io/posts/about_handwriting/</id>
+    <published>2026-06-27T00:00:00.000Z</published>
+    <updated>2026-06-27T00:00:00.000Z</updated>
+    <summary>临时想到的有关生成手写字体的思路.</summary>
+    <content type="html"><![CDATA[<h2>思路来源</h2>
+<p>首先我发现目前大部分的生成手写字体的方法都是基于重绘的。</p>
+<p>然后大部分都是基于行的，而基于单字的以及基于整页的并不多。</p>
+<p>我发现s2-pro这个zero-shot语音克隆的策略是：</p>
+<p>把语音特征分为“音色”和“语言习惯”</p>
+<p>语音和文本都是连续的、线性的，</p>
+<p>那么类似的，我认为手写文本特征也可以分为“字体”和“书写习惯”</p>
+<p>因此我认为可以进行类似的实现。</p>
+<p>我想象中的操作步骤如下：</p>
+<ol>
+<li>首先获取大量的以行为单位的手写文本</li>
+<li>然后找找有没有现有的项目能够把这些手写文本逐字摘取出来并使用方框标识出来其相对位置和拉伸情况</li>
+<li>然后使用某标准字体例如黑体进行对齐操作</li>
+<li>先训练一个标准模型，使用标准单字进行训练，期望效果是：输入目标文字和范围限制方框，输出生成契合方框的标准字体</li>
+<li>然后进行训练，先把摘取出来的单个字体和标准字体统一对齐到1024x1024（如果电脑扛不动的话那就只能用512了)，这是字体部分的微调</li>
+<li>同时也可以进行另一组训练，数据对是“文本串”和“这个文本串在行内的相对方框位置与拉伸”，这是书写习惯的微调</li>
+<li>最终用书写习惯模型生成方框，再用微调过后的字体模型在方框中生成字体，最终就能获得符合书写习惯和字体的一行为单位的文本了。(这是不是也算是MOE模型?)</li>
+</ol>
+]]></content>
+    <author>
+      <name>Casumi</name>
+    </author>
+    <category term="Musings"></category>
+  </entry>
   <entry>
     <title>Testing Post 001</title>
     <link href="https://casumi713.github.io/posts/test_post/" rel="alternate" type="text/html"/>
