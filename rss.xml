@@ -1,4 +1,383 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Casumi</title><description>✦ 二次元与技术の交错之境 ✦</description><link>https://casumi713.github.io/</link><language>zh_CN</language><item><title>有关于生成手写内容的一些想法</title><link>https://casumi713.github.io/posts/about_handwriting/</link><guid isPermaLink="true">https://casumi713.github.io/posts/about_handwriting/</guid><description>临时想到的有关生成手写字体的思路.</description><pubDate>Sat, 27 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;思路来源&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Casumi</title><description>✦ 二次元与技术の交错之境 ✦</description><link>https://casumi713.github.io/</link><language>zh_CN</language><item><title>Linux系统迁移的包管理准备</title><link>https://casumi713.github.io/posts/package_for_linux_system_migration/</link><guid isPermaLink="true">https://casumi713.github.io/posts/package_for_linux_system_migration/</guid><description>我即将进行重装系统，为此我正在进行准备。</description><pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这是一个经过深度清洗、剔除所有依赖库（&lt;code&gt;-libs&lt;/code&gt;, &lt;code&gt;-common&lt;/code&gt;, &lt;code&gt;-data&lt;/code&gt;）、字体包、语言包和底层组件后的&lt;strong&gt;纯用户级应用与工具清单&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;这份列表只保留了你&lt;strong&gt;主动安装&lt;/strong&gt;或&lt;strong&gt;显式需要&lt;/strong&gt;的软件，重装时直接复制使用即可：&lt;/p&gt;
+&lt;h3&gt;🖥️ 桌面环境与窗口管理&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;# KDE Plasma 核心 (按需选择，若以Hyprland为主可仅装基础包)
+plasma-desktop plasma-workspace sddm-wayland-plasma kde-cli-tools
+# Hyprland 生态
+hyprland hyprlock hyprpaper hypridle niri wofi grimblast slurp wl-clipboard
+# 主题与美化
+papirus-icon-theme breeze-gtk qt6ct adwaita-qt6
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;💻 终端与 Shell&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;kitty ghostty zsh tmux starship fastfetch btop htop bat eza fd fzf ripgrep
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;🛠️ 开发与容器 (推荐将具体语言放入 Distrobox)&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;# 容器化
+podman podman-compose distrobox toolbox buildah skopeo
+# 编辑器 / IDE
+neovim vim vscode codium kate
+# 版本控制与工具
+git git-lfs gh lazygit delta
+# 语言运行时 (仅保留系统级必需的，其余建议进容器)
+rust cargo golang nodejs python3 zig clang gcc make cmake meson ninja-build
+# AI / GPU 计算 (⚠️ 仅 NVIDIA 显卡保留 cuda，AMD 保留 rocm)
+akmod-nvidia xorg-x11-drv-nvidia-cuda nvidia-persistenced
+# rocm-hip rocm-smi  # ← AMD 显卡取消注释此行
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;🎨 多媒体与创作&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;ffmpeg vlc mpv krita okular foliate calibre spectacle pipewire wireplumber
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;📦 办公与文档&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;libreoffice thunderbird kmail ark p7zip unzip zip
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;🌐 网络与安全&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;firefox chromium networkmanager-openvpn networkmanager-wireguard wireshark keepassxc firewalld
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;🔧 系统工具&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;dnf5 dnf5-plugins rpmfusion-free-release rpmfusion-nonfree-release
+fedora-third-party flatpak fwupd tlp powertop smartmontools
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;h3&gt;⚠️ 重装执行注意事项&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;不要直接粘贴全部命令&lt;/strong&gt;：先确认你的主力桌面是 KDE 还是 Hyprland，二选一作为核心，另一个仅保留最小可用包。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;NVIDIA 驱动必须单独处理&lt;/strong&gt;：&lt;pre&gt;&lt;code&gt;# 启用 RPM Fusion 后再装驱动
+sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda
+# 重启后验证: nvidia-smi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;字体无需手动安装&lt;/strong&gt;：上述应用会自动拉取所需字体。如果你有特殊字体需求（如编程字体），仅需额外安装 &lt;code&gt;jetbrains-mono-fonts&lt;/code&gt; 或 &lt;code&gt;fira-code-fonts&lt;/code&gt; 等 1-2 个包。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;开发环境强烈建议容器化&lt;/strong&gt;：&lt;pre&gt;&lt;code&gt;# 示例：创建 Rust 开发容器，而非在宿主机装 rust
+distrobox create --name rust-dev --image fedora:42
+distrobox enter rust-dev
+sudo dnf install rust cargo
+&lt;/code&gt;&lt;/pre&gt;
+这样宿主机始终保持干净，重装恢复只需几条 &lt;code&gt;distrobox create&lt;/code&gt; 命令。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;配置比包更重要&lt;/strong&gt;：重装前务必备份 &lt;code&gt;~/.config&lt;/code&gt;、&lt;code&gt;~/.local/share/nvim&lt;/code&gt;、&lt;code&gt;~/.zshrc&lt;/code&gt;、SSH/GPG 密钥。包可以随时装，配置丢了才是真痛苦。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr /&gt;
+&lt;h1&gt;flatpak&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;WPS 365	cn.wps.wps_365	12.1.2.24722	stable	flathub	user
+Saber	com.adilhanney.saber	1.34.3	stable	flathub	user
+百度网盘	com.baidu.NetDisk	4.17.8	stable	flathub	user
+Rnote	com.github.flxzt.rnote	0.14.2	stable	flathub	user
+Flatseal	com.github.tchx84.Flatseal	2.4.0	stable	flathub	user
+Xournal++	com.github.xournalpp.xournalpp	1.3.3	stable	flathub	user
+Inochi Creator	com.inochi2d.inochi-creator	0.8.6	stable	flathub	user
+Inochi Session	com.inochi2d.inochi-session	0.8.7	stable	flathub	user
+OBS Studio	com.obsproject.Studio	32.1.0	stable	flathub	user
+Pixelorama	com.orama_interactive.Pixelorama	1.1.9	stable	flathub	user
+app	com.sigmafilemanager.app		master	app-origin	user
+Wemeet	com.tencent.wemeet	3.26.10.401	master	wemeet-origin	user
+ProtonPlus	com.vysp3r.ProtonPlus	0.5.17	stable	flathub	system
+Reaper	fm.reaper.Reaper	7.66	stable	flathub	user
+KikoPlay	io.github.KikoPlayProject.KikoPlay	2.0.0	stable	flathub	user
+Weylus Community Edition	io.github.electronstudio.WeylusCommunityEdition	2024.8.1	stable	flathub	user
+Aerion	io.github.hkdb.Aerion	0.2.5	stable	flathub	user
+Hidamari	io.github.jeffshee.Hidamari	3.6	stable	flathub	user
+LMMS	io.lmms.LMMS	1.2.2	stable	flathub	user
+任务中心	io.missioncenter.MissionCenter	1.1.0	stable	flathub	system
+Typora	io.typora.Typora	1.12.4	stable	flathub	system
+Anki	net.ankiweb.Anki	25.09.02	stable	flathub	user
+Lutris	net.lutris.Lutris	0.5.22	stable	flathub	system
+FamiStudio	org.famistudio.FamiStudio	4.5.0	stable	flathub	user
+TAP-plugins	org.freedesktop.LinuxAudio.Plugins.TAP	1.0.1	25.08	flathub	user
+SWH	org.freedesktop.LinuxAudio.Plugins.swh	0.4.17	25.08	flathub	user
+Freedesktop Platform	org.freedesktop.Platform	freedesktop-sdk-23.08.34	23.08	flathub	user
+Freedesktop Platform	org.freedesktop.Platform	freedesktop-sdk-24.08.30	24.08	flathub	user
+Freedesktop Platform	org.freedesktop.Platform	freedesktop-sdk-25.08.8	25.08	flathub	system
+i386	org.freedesktop.Platform.Compat.i386		25.08	flathub	system
+Mesa	org.freedesktop.Platform.GL.default	25.0.7	23.08	flathub	user
+Mesa (Extra)	org.freedesktop.Platform.GL.default	25.0.7	23.08-extra	flathub	user
+Mesa	org.freedesktop.Platform.GL.default	26.0.6	24.08	flathub	user
+Mesa (Extra)	org.freedesktop.Platform.GL.default	26.0.6	24.08extra	flathub	user
+Mesa	org.freedesktop.Platform.GL.default	25.3.5	25.08	flathub	system
+Mesa	org.freedesktop.Platform.GL.default	26.0.8	25.08	flathub	user
+Mesa (Extra)	org.freedesktop.Platform.GL.default	25.3.5	25.08-extra	flathub	system
+Mesa (Extra)	org.freedesktop.Platform.GL.default	26.0.8	25.08-extra	flathub	user
+nvidia-580-159-03	org.freedesktop.Platform.GL.nvidia-580-159-03		1.4	flathub	user
+Mesa	org.freedesktop.Platform.GL32.default	25.3.5	25.08	flathub	system
+Mesa (Extra)	org.freedesktop.Platform.GL32.default	25.3.5	25.08-extra	flathub	system
+Nvidia VAAPI driver	org.freedesktop.Platform.VAAPI.nvidia		25.08	flathub	system
+Nvidia VAAPI driver	org.freedesktop.Platform.VAAPI.nvidia		25.08	flathub	user
+gamescope	org.freedesktop.Platform.VulkanLayer.gamescope	3.16.23	25.08	flathub	system
+Codecs Extra Extension	org.freedesktop.Platform.codecs-extra		25.08-extra	flathub	system
+Codecs Extra Extension	org.freedesktop.Platform.codecs-extra		25.08-extra	flathub	user
+i386	org.freedesktop.Platform.codecs_extra.i386		25.08-extra	flathub	system
+FFmpeg extension with extra codecs	org.freedesktop.Platform.ffmpeg-full		24.08	flathub	user
+openh264	org.freedesktop.Platform.openh264	2.5.1	2.5.1	flathub	user
+Freedesktop SDK	org.freedesktop.Sdk	freedesktop-sdk-25.08.11	25.08	flathub	user
+GNOME Application Platform version 48	org.gnome.Platform		48	flathub	user
+GNOME Application Platform version 49	org.gnome.Platform		49	flathub	system
+GNOME Application Platform version 50	org.gnome.Platform		50	flathub	user
+adw-gtk3 GTK Theme	org.gtk.Gtk3theme.adw-gtk3	6.5	3.22	flathub	user
+Adwaita theme	org.kde.KStyle.Adwaita		5.15-25.08	flathub	user
+Adwaita theme	org.kde.KStyle.Adwaita		6.10	flathub	user
+KDE Application Platform	org.kde.Platform		5.15-25.08	flathub	user
+KDE Application Platform	org.kde.Platform		6.10	flathub	user
+KDE Application Platform	org.kde.Platform		6.8	flathub	user
+Kdenlive	org.kde.kdenlive	26.04.0	stable	flathub	user
+Krita	org.kde.krita	5.3.2.1	stable	flathub	user
+Pix	org.kde.pix	4.0.1	stable	flathub	user
+KeePassXC	org.keepassxc.KeePassXC	2.7.12	stable	flathub	user
+qBittorrent	org.qbittorrent.qBittorrent	5.2.1	stable	flathub	user
+gecko	org.winehq.Wine.gecko		stable-25.08	flathub	system
+mono	org.winehq.Wine.mono		stable-25.08	flathub	system
+osu!	sh.ppy.osu	2026.305.0-lazer	stable	flathub	user
+
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>Linux开发环境的探讨</title><link>https://casumi713.github.io/posts/linux_dev_management/</link><guid isPermaLink="true">https://casumi713.github.io/posts/linux_dev_management/</guid><description>我即将进行重装系统，为此我正在进行准备。</description><pubDate>Wed, 08 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;我经常喜欢去GitHub上面乱逛然后找点感兴趣的小项目并在自己的电脑上进行编译尝试，不过这也导致了一个问题：这些项目的语言各不相同，有C、Cpp、Rust、Zig、Go、Python、Kotlin、Java、Ts等等等等各种各样，需要的系统库依赖的版本也各种各样，导致我管理起来非常麻烦。我又非常关系系统库的干净与整洁，这导致我非常痛苦。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;解决方案&lt;/h2&gt;
+&lt;p&gt;使用 devbox + direnv ，必要时再用上 distrobox&lt;/p&gt;
+&lt;p&gt;为了使得编译出来的项目在任何linux上都能够运行，决定尽可能使用静态编译：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于C、C++项目：CMake配置使用 &lt;code&gt;zig cc&lt;/code&gt;、&lt;code&gt;zig c++&lt;/code&gt; 进行静态编译并用Ninja构建&lt;/li&gt;
+&lt;li&gt;对于Rust项目：本身Cargo静态编译就行了，再使用 &lt;code&gt;cargo-zigbuild&lt;/code&gt; 来接管链接过程，&lt;code&gt;cargo zigbuild --target x86_64-unknown-linux-musl&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;对于Go项目：直接Go静态编译就行了&lt;/li&gt;
+&lt;li&gt;对于Zig项目：直接Zig静态编译就行了&lt;/li&gt;
+&lt;li&gt;对于Python项目：uv随便吧&lt;/li&gt;
+&lt;li&gt;对于Kotlin项目：反正基本上也只在安卓上运行&lt;/li&gt;
+&lt;li&gt;对于TS项目：npm随便吧&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;测试方案：编译llama.cpp&lt;/p&gt;
+&lt;p&gt;cmake -B build-cuda -G Ninja &lt;br /&gt;
+-DCMAKE_C_COMPILER:STRING=&quot;zig;cc&quot; &lt;br /&gt;
+-DCMAKE_CXX_COMPILER:STRING=&quot;zig;c++&quot; &lt;br /&gt;
+-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON &lt;br /&gt;
+-DCMAKE_INSTALL_RPATH=&apos;$ORIGIN&apos; &lt;br /&gt;
+-DGGML_CUDA=ON &lt;br /&gt;
+-DCMAKE_CUDA_FLAGS=&apos;-Xcompiler=-U_GNU_SOURCE&apos;&lt;/p&gt;
+&lt;p&gt;cmake --build build-cuda -j$(nproc)&lt;/p&gt;
+&lt;h1&gt;注意，cuda后端不支持静态编译&lt;/h1&gt;
+&lt;h1&gt;不过vulkan后端支持&lt;/h1&gt;
+&lt;p&gt;cmake -B build-vulkan -G Ninja &lt;br /&gt;
+-DCMAKE_C_COMPILER:STRING=&quot;zig;cc&quot; &lt;br /&gt;
+-DCMAKE_CXX_COMPILER:STRING=&quot;zig;c++&quot; &lt;br /&gt;
+-DCMAKE_BUILD_RPATH=&apos;$ORIGIN&apos; &lt;br /&gt;
+-DGGML_STATIC=ON &lt;br /&gt;
+-DBUILD_SHARED_LIBS=OFF &lt;br /&gt;
+-DGGML_VULKAN=ON &lt;br /&gt;
+-DGGML_CUDA=OFF&lt;/p&gt;
+&lt;p&gt;我认为直接使用vulkan后端就行了，没有必要使用cuda&lt;/p&gt;
+&lt;p&gt;cmake -B build-vulkan -G Ninja &lt;br /&gt;
+-DCMAKE_C_COMPILER:STRING=&quot;zig;cc&quot; &lt;br /&gt;
+-DCMAKE_CXX_COMPILER:STRING=&quot;zig;c++&quot; &lt;br /&gt;
+-DCMAKE_BUILD_TYPE=Release &lt;br /&gt;
+-DCMAKE_BUILD_RPATH=&apos;$ORIGIN&apos; &lt;br /&gt;
+-DBUILD_SHARED_LIBS=ON &lt;br /&gt;
+-DGGML_VULKAN=ON &lt;br /&gt;
+-DGGML_CUDA=OFF&lt;/p&gt;
+&lt;p&gt;cmake --build build-vulkan -j$(nproc)&lt;/p&gt;
+&lt;p&gt;strip build-vulkan/bin/*&lt;/p&gt;
+&lt;p&gt;cmake -B build-vulkan -G Ninja &lt;br /&gt;
+-DCMAKE_C_COMPILER:STRING=&quot;zig;cc&quot; &lt;br /&gt;
+-DCMAKE_CXX_COMPILER:STRING=&quot;zig;c++&quot; &lt;br /&gt;
+-DCMAKE_BUILD_TYPE=Release &lt;br /&gt;
+-DBUILD_SHARED_LIBS=ON &lt;br /&gt;
+-DGGML_STATIC=OFF &lt;br /&gt;
+-DGGML_VULKAN=ON &lt;br /&gt;
+-DCMAKE_BUILD_RPATH=&apos;$ORIGIN&apos;
+cmake --build build-vulkan -j$(nproc)
+strip build-vulkan/bin/&lt;em&gt;.so&lt;/em&gt; build-vulkan/bin/llama-*&lt;/p&gt;
+&lt;p&gt;zsh主题推荐：robbyrussell、&lt;/p&gt;
+</content:encoded></item><item><title>Linux系统迁移的准备</title><link>https://casumi713.github.io/posts/preparation_for_linux_system_migration/</link><guid isPermaLink="true">https://casumi713.github.io/posts/preparation_for_linux_system_migration/</guid><description>我即将进行重装系统，为此我正在进行准备。</description><pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Celestia系&lt;/h1&gt;
+&lt;h2&gt;Celesita-Shell (QML+Rust)&lt;/h2&gt;
+&lt;p&gt;这是基于hyprland上的caelestia-shell的niri移植版本进行修改而来的&lt;/p&gt;
+&lt;p&gt;现在的问题是进行了一定的重构和适配但是还存在较多的问题，还有不少的功能尚未实现&lt;/p&gt;
+&lt;p&gt;对了，刚刚发现点击通知没办法跳转/弹出对应应用&lt;/p&gt;
+&lt;h2&gt;Celestia-Wallpaper (Rust)&lt;/h2&gt;
+&lt;p&gt;这是基于mpvpaper进行rust重构得到的，目前已经支持了图片、视频、spine(仅3.8)，本来想要支持web但是发现如果移植的话过于庞大了，后续想要使用基于windowtolayer来把任何程序的界面放置到background层面来实现，不过至今没有开始正式移植&lt;/p&gt;
+&lt;p&gt;后续也计划补充关于spine4.2的支持以及多壁纸的切换&lt;/p&gt;
+&lt;h2&gt;Celestia-TabletDriver (Kotlin+Rust)&lt;/h2&gt;
+&lt;p&gt;这是基于Weylus实现的平板转数位板，目前专门针对wayland+华为平板优化(因为我只有华为平板)，分为两个部分，一部分是在linux端进行被控，另一部分是在安卓端进行手写笔操作的。现在的问题是&lt;/p&gt;
+&lt;h2&gt;Celestia-PDF-Reader (Zig)&lt;/h2&gt;
+&lt;p&gt;这是基于Fancy-Cat实现的&lt;/p&gt;
+&lt;h2&gt;Celestia-Ranobe (Rust)&lt;/h2&gt;
+&lt;p&gt;这是基于Hoshi-Reader-Android进行Rust重构得到的&lt;/p&gt;
+&lt;p&gt;opencode试了两次，claude+deepseek试了一次，codex+gpt5.5试了两次，全部失败&lt;/p&gt;
+&lt;p&gt;该项目现已废弃&lt;/p&gt;
+&lt;h1&gt;部分已知问题&lt;/h1&gt;
+&lt;p&gt;如果在关机前使用的是省电模式，那么再次开机之后会从SDDM界面就开始显示过曝&lt;/p&gt;
+&lt;p&gt;如果进入了windows系统并且触发了休眠或者睡眠，都有可能在回到linux时触发脏硬盘挂载失败导致进入紧急模式，建议在紧急模式中使用 &lt;code&gt;journalctl -xb | grep -i &quot;ntfs\|mount&quot;&lt;/code&gt; 来确认是哪张硬盘的问题，并回到windows系统在管理员模式下使用 &lt;code&gt;chkdsk  E:  /f&lt;/code&gt;这种命令来清理脏标记。&lt;/p&gt;
+&lt;p&gt;由于之前使用了虚拟显示器，因此导致没办法在linux系统中实现切换gpu模式为仅核显，且导致NVIDIA显卡的功耗持续处于高位，不过后来发现即使切换到了核显，cpu功耗也比win系统下要高&lt;/p&gt;
+&lt;h1&gt;关于备份&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;proj还没备份完&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;两个document的后续需要二次备份&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;两个download没备份过&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;APP的application列表没备份过&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;distroEnvs的zsh相关可以备份一下&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;~/rpmbuild 建议打包一下&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;根目录尤其要注意备份 .config/ 和 .local/ 以及 .zshrc 、.zhistory、.gitconfig、等等等等&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;特别是各种来源的软件包都需要进行准备一下&lt;/p&gt;
+&lt;p&gt;还有一些无法显式复制的配置&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;celestia-pdf-reader和kitim在copr上面都有，kew在terra仓库上也有&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;几个浏览器也要备份&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;还有keepassxc的密码&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;最后记得要推送casumi blog 到github&lt;/p&gt;
+&lt;h1&gt;关于重装&lt;/h1&gt;
+&lt;p&gt;基于xdg-ninja&lt;/p&gt;
+&lt;p&gt;export XDG_CONFIG_HOME=&quot;$HOME/.config&quot;
+export XDG_DATA_HOME=&quot;$HOME/.local/share&quot;
+export XDG_STATE_HOME=&quot;$HOME/.local/state&quot;
+export XDG_CACHE_HOME=&quot;$HOME/.cache&quot;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# ===
+# XDG Base Directory Specification - 基础变量（必须最先设置）
+# ===
+export XDG_CONFIG_HOME=&quot;${XDG_CONFIG_HOME:-$HOME/.config}&quot;
+export XDG_DATA_HOME=&quot;${XDG_DATA_HOME:-$HOME/.local/share}&quot;
+export XDG_STATE_HOME=&quot;${XDG_STATE_HOME:-$HOME/.local/state}&quot;
+export XDG_CACHE_HOME=&quot;${XDG_CACHE_HOME:-$HOME/.cache}&quot;
+# XDG_RUNTIME_DIR 通常由 systemd/logind 自动设置，此处不设默认值
+
+# ===
+# Zsh &amp;amp; Oh My Zsh
+# ===
+# ZDOTDIR 必须在 .zshenv 中设置，且先于 OMZ 初始化
+export ZDOTDIR=&quot;$XDG_CONFIG_HOME/zsh&quot;
+export HISTFILE=&quot;$XDG_STATE_HOME/zsh/history&quot;
+# compinit 缓存路径需在 .zshrc 中配合使用：
+#   mkdir -p &quot;$XDG_CACHE_HOME/zsh&quot;
+#   autoload -Uz compinit &amp;amp;&amp;amp; compinit -d &quot;$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION&quot;
+
+# Oh My Zsh 数据目录（Issue #9543: OMZ 不完全遵循 XDG，此变量为最佳缓解方案）
+export ZSH=&quot;$XDG_DATA_HOME/oh-my-zsh&quot;
+
+# ===
+# Shell History (Bash / Ash)
+# ===
+export HISTFILE=&quot;$XDG_STATE_HOME/bash/history&quot;       # Bash history
+# 如使用 ash: export HISTFILE=&quot;$XDG_STATE_HOME/ash/history&quot;
+
+# ===
+# Development Tools
+# ===
+# Rust / Cargo
+export CARGO_HOME=&quot;$XDG_DATA_HOME/cargo&quot;
+
+# Go
+export GOPATH=&quot;$XDG_DATA_HOME/go&quot;
+
+# NPM
+export NPM_CONFIG_USERCONFIG=&quot;$XDG_CONFIG_HOME/npm/npmrc&quot;
+export NPM_CONFIG_INIT_MODULE=&quot;$XDG_CONFIG_HOME/npm/config/npm-init.js&quot;
+export NPM_CONFIG_CACHE=&quot;$XDG_CACHE_HOME/npm&quot;
+export NPM_CONFIG_TMP=&quot;${XDG_RUNTIME_DIR:-/tmp}/npm&quot;
+
+# NVM
+export NVM_DIR=&quot;$XDG_DATA_HOME/nvm&quot;
+
+# Gradle
+export GRADLE_USER_HOME=&quot;$XDG_DATA_HOME/gradle&quot;
+
+# Elan (Lean)
+export ELAN_HOME=&quot;$XDG_DATA_HOME/elan&quot;
+
+# Triton
+export TRITON_HOME=&quot;$XDG_CACHE_HOME/triton&quot;
+
+# GNU Parallel
+export PARALLEL_HOME=&quot;$XDG_CONFIG_HOME/parallel&quot;
+
+# Codex
+export CODEX_HOME=&quot;$XDG_CONFIG_HOME/codex&quot;
+
+# Claude Code
+export CLAUDE_CONFIG_DIR=&quot;$XDG_CONFIG_HOME/claude&quot;
+
+# ===
+# Python History（自动适配版本）
+# ===
+if python3 -c &quot;import sys; exit(0 if sys.version_info &amp;gt;= (3,13) else 1)&quot; 2&amp;gt;/dev/null; then
+    # Python &amp;gt;= 3.13: 原生支持 PYTHON_HISTORY
+    export PYTHON_HISTORY=&quot;$XDG_STATE_HOME/python_history&quot;
+else
+    # Python &amp;lt; 3.13: 需要 PYTHONSTARTUP 脚本
+    export PYTHONSTARTUP=&quot;$XDG_CONFIG_HOME/python/pythonrc.py&quot;
+    # 注意：需手动创建该文件，内容参见 xdg-ninja 输出中的 pythonrc.py 脚本
+fi
+
+# ===
+# Java / OpenJDK
+# ===
+# 部分 Java 应用不遵守此设置，但这是目前最佳方案
+export _JAVA_OPTIONS=&quot;-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java&quot;
+
+# ===
+# GnuPG（⚠️ 高风险，迁移后务必验证 socket 路径）
+# ===
+export GNUPGHOME=&quot;$XDG_DATA_HOME/gnupg&quot;
+
+# ===
+# Android SDK / ADB
+# ===
+export ANDROID_HOME=&quot;$XDG_DATA_HOME/android/sdk&quot;
+export ANDROID_USER_HOME=&quot;$XDG_DATA_HOME/android&quot;
+export ANDROID_AVD_HOME=&quot;$XDG_DATA_HOME/android/avd&quot;
+# adb alias（需放在 .zshrc 或 .bashrc 中，alias 不能在 .zshenv 中导出）
+# alias adb=&apos;HOME=&quot;$XDG_DATA_HOME/android&quot; adb&apos;
+
+# ===
+# GTK / X11 / GUI
+# ===
+export GTK2_RC_FILES=&quot;$XDG_CONFIG_HOME/gtk-2.0/gtkrc&quot;
+# xrdb 需在 Xsession 或 .xinitrc 中调用：
+#   xrdb -load &quot;$XDG_CONFIG_HOME/X11/xresources&quot;
+
+# ===
+# NVIDIA
+# ===
+export CUDA_CACHE_PATH=&quot;$XDG_CACHE_HOME/nv&quot;
+# nvidia-settings 需 alias：
+# alias nvidia-settings=&apos;nvidia-settings --config=&quot;$XDG_CONFIG_HOME/nvidia/settings&quot;&apos;
+
+# ===
+# .NET / Dotnet
+# ===
+export DOTNET_CLI_HOME=&quot;$XDG_DATA_HOME/dotnet&quot;
+
+# ===
+# Z (目录跳转工具)
+# ===
+export _Z_DATA=&quot;$XDG_DATA_HOME/z&quot;
+
+# ===
+# Ren&apos;Py
+# ===
+export RENPY_PATH_TO_SAVES=&quot;$XDG_DATA_HOME&quot;
+
+# ===
+# LMMS（需 alias）
+# ===
+# alias lmms=&apos;lmms -c &quot;$XDG_CONFIG_HOME/lmms/lmmsrc.xml&quot;&apos;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;casuki@fedora:~/xdg-ninja (main) $ npm list -g --depth=0
+/home/casuki/.nvm/versions/node/v24.14.0/lib
+├── @anthropic-ai/claude-code@2.1.195
+├── @github/copilot@1.0.36
+├── @openai/codex@0.142.5
+├── @playwright/cli@0.1.1
+├── bun@1.3.12
+├── corepack@0.34.6
+├── npm@11.9.0
+└── opencode-ai@1.17.15&lt;/p&gt;
+&lt;p&gt;casuki@fedora:~/xdg-ninja (main) $ cargo install --list
+hyprshell v4.10.4:
+hyprshell
+kitdraw v0.2.1:
+kitdraw
+kitpdf v0.3.3:
+kitpdf
+termusic v0.13.2:
+termusic
+termusic-server v0.13.2:
+termusic-server
+viu v1.6.1:
+viu
+waycorner v0.2.3:
+waycorner&lt;/p&gt;
+</content:encoded></item><item><title>有关于生成手写内容的一些想法</title><link>https://casumi713.github.io/posts/about_handwriting/</link><guid isPermaLink="true">https://casumi713.github.io/posts/about_handwriting/</guid><description>临时想到的有关生成手写字体的思路.</description><pubDate>Sat, 27 Jun 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;思路来源&lt;/h2&gt;
 &lt;p&gt;首先我发现目前大部分的生成手写字体的方法都是基于重绘的。&lt;/p&gt;
 &lt;p&gt;然后大部分都是基于行的，而基于单字的以及基于整页的并不多。&lt;/p&gt;
 &lt;p&gt;我发现s2-pro这个zero-shot语音克隆的策略是：&lt;/p&gt;
